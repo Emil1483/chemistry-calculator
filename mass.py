@@ -1,5 +1,5 @@
 from periodic_table.periodic_table import element_from
-from units import Mass_Unit, g
+from units import Mass_Unit, g, mol_from_particles, particles_from_mol
 from utils.var_finder import get_missing_variables, triangle_equation
 import utils.input_utils
 import parse
@@ -10,6 +10,10 @@ class Mol:
 
     def __str__(self):
         return f'{self.value} mol'
+
+    @property
+    def particles(self) -> float:
+        return particles_from_mol(self.value)
 
 class Molar_Mass:
     def __init__(self, value: float):
@@ -44,7 +48,7 @@ def of_molecule_from_input() -> Molar_Mass:
         of_molecule
     )
 
-def missing_value() -> tuple:
+def missing_value():
     Mm, n, m = ['Mm', 'amount (mol)', 'mass (g)']
 
     known_variables = [(Mm, of_molecule_from_input().value)]
@@ -66,3 +70,11 @@ def missing_value() -> tuple:
         return Mol(value)
 
     raise ValueError('could not get the missing variable')
+
+def of_molecules(molecule: str, amount: float) -> float:
+    mol = mol_from_particles(amount)
+    return of_molecules_in_mol(molecule, mol)
+
+def of_molecules_in_mol(molecule: str, mol: float) -> float:
+    mass = of_molecule(molecule)
+    return mass.value * mol

@@ -1,3 +1,7 @@
-import mass
+import test_2
 
-print(mass.missing_value())
+x = 10
+
+y = test_2.get(input('y: '))
+
+print(y)

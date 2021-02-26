@@ -99,7 +99,7 @@ def get(prompt: str, getter):
                   "is not a valid input, please try again")
 
 def get_float(prompt):
-    return get(prompt, lambda x: float(x))
+    return get(prompt, eval)
 
 
 def get_variables(possible_variables: list) -> list:

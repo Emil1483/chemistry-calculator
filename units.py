@@ -21,3 +21,10 @@ class g(Mass_Unit):
 class mg(Mass_Unit):
     def __init__(self, value: float):
         super().__init__(1e-3, value)
+
+avogadro = 6.02214076e23
+def mol_from_particles(n: float) -> float:
+    return n / avogadro
+
+def particles_from_mol(n: float) -> float:
+    return n * avogadro
