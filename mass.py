@@ -49,27 +49,26 @@ def of_molecule_from_input() -> Molar_Mass:
     )
 
 def missing_value():
-    Mm, n, m = ['Mm', 'amount (mol)', 'mass (g)']
+    Mm, n, m, v, c = ['Mm', 'amount (mol)', 'mass (g)', 'volume (m^3)', 'consentration (g / m^3)']
 
     known_variables = [(Mm, of_molecule_from_input().value)]
-    input_variables = utils.input_utils.get_variables([m, n])
-
-    if len(input_variables) != 1:
-        raise ValueError('you must only input one variable')
+    input_variables = utils.input_utils.get_variables([n, m, v, c])
 
     for input_variable in input_variables:
         known_variables.append(input_variable)
 
-    equation = triangle_equation(Mm, n, m)
-    missing = equation.get_missing_variable(known_variables)
-    name, value = missing
+    equations = [
+        triangle_equation(Mm, n, m),
+        triangle_equation(c, v, m),
+    ]
+    result = get_missing_variables(known_variables, equations)
 
-    if name is m:
-        return g(value)
-    elif name is n:
-        return Mol(value)
+    print()
+    for name, value in result:
+        print(f'{name} = {value}')
+    print()
 
-    raise ValueError('could not get the missing variable')
+    return result
 
 def of_molecules(molecule: str, amount: float) -> float:
     mol = mol_from_particles(amount)
